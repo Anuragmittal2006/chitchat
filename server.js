@@ -40,6 +40,27 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('A user disconnected');
     });
+
+
+    // Disintegrate room logic
+socket.on('disintegrateRoom', (roomId) => {
+    console.log(`Room ${roomId} is being disintegrated by ${socket.username}`);
+
+    // Notify all users in the room to disintegrate (close their tabs and clear data)
+    io.to(roomId).emit('disintegrateRoom', { message: 'This room has been disintegrated.' });
+
+    // Close the room by disconnecting all sockets
+    io.in(roomId).socketsLeave(roomId);
+});
+
+  
+
+
+
+
+
+
+
 });
 
 // Serve room.html for dynamic room URLs
